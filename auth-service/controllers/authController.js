@@ -20,7 +20,11 @@ exports.register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Enregistrez l'utilisateur dans la base de données
-        /* Requête SQL pour insérer l'utilisateur avec le mot de passe haché dans la base de données */
+        await db.query(
+            'INSERT INTO users (username, hashedPassword) VALUES (?, ?)',
+            [username, hashedPassword]
+        );
+        
 
         res.status(201).json({ message: 'Inscription réussie.' });
     } catch (error) {
