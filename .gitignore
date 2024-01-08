@@ -1,0 +1,5 @@
+.env 
+
+auth-service/package-lock.json
+auth-service/node_modules
+
