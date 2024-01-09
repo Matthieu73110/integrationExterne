@@ -1,7 +1,8 @@
 const express = require('express');
+const { register } = require('module');
 const app = express();
 const path = require('path');
-const itineraryRoutes = require('./routes/itinerary');
+const userRoutes = require('./routes/userRoutes');
 
 // Configuration d'EJS
 app.set('view engine', 'ejs');
@@ -12,7 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
-app.use('/itinerary', itineraryRoutes);
+app.use(userRoutes);
+
 
 
 const PORT = process.env.PORT || 3001;
