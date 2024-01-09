@@ -21,7 +21,7 @@ exports.register = async (req, res) => {
 
         // Enregistrez l'utilisateur dans la base de données
         await db.query(
-            'INSERT INTO users (username, hashedPassword) VALUES (?, ?)',
+            'INSERT INTO users (username, password) VALUES (?, ?)',
             [username, hashedPassword]
         );
         

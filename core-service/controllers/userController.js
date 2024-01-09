@@ -15,7 +15,7 @@ exports.login = async (req, res) => {
         const { username, password } = req.body;
         const result = await authServiceClient.login(username, password);
         // Stocker le token JWT ici si nécessaire
-        res.redirect('/dashboard');  // Rediriger vers le tableau de bord
+        res.redirect('/index');  // Rediriger vers le tableau de bord
     } catch (error) {
         res.status(500).send('Erreur lors de la connexion');
     }
