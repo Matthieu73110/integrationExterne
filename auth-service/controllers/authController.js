@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
             'SELECT * FROM users WHERE username = ?',
             [username]
         );
-        if (userExists) {
+        if (userExists.length > 0 ) {
             return res.status(409).json({ message: "L'utilisateur existe déjà." });
         }
 
@@ -36,30 +36,38 @@ exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Vérifiez si l'utilisateur existe
+        // Vérifiez si l'utilisateur existe déjà
         const user = await db.query(
             'SELECT * FROM users WHERE username = ?',
             [username]
         );
 
-        if (!user) {
-            return res.status(401).json({ message: "Identifiants incorrects." });
-        }
+        console.log(user);
 
-        // Comparez le mot de passe fourni avec le mot de passe haché stocké
-        const isMatch = await bcrypt.compare(password, user.hashedPassword);
-        if (!isMatch) {
-            return res.status(401).json({ message: "Identifiants incorrects." });
-        }
+        // if (user.length === 0) {
+        //     return res.status(401).json({ message: "L'utilisateur n'existe pas." });
+        // }
 
-        // Créez un JWT
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        // // Vérifiez si le mot de passe est correct
+        // const passwordCorrect = await bcrypt.compare(password, user[0].password);
+        // if (!passwordCorrect) {
+        //     return res.status(401).json({ message: 'Mot de passe incorrect.' });
+        // }
 
-        res.json({ message: "Connexion réussie.", token });
+        // // Créez un token JWT
+        // const token = jwt.sign(
+        //     { userId: user[0].id },
+        //     process.env.JWT_SECRET,
+        //     { expiresIn: '24h' }
+        // );
+
+        // res.status(200).json({ token });
+
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la connexion.' });
     }
 };
+
 
 
 exports.logout = async (req, res) => {
