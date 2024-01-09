@@ -14,5 +14,6 @@ app.use(express.urlencoded({ extended: false }));
 // Routes
 app.use('/itinerary', itineraryRoutes);
 
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Core Service running on port ${PORT}`));

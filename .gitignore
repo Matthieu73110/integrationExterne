@@ -3,3 +3,6 @@
 auth-service/package-lock.json
 auth-service/node_modules
 
+core-service/package-lock.json
+core-service/node_modules
+
