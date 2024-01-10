@@ -34,38 +34,44 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
+
         const { username, password } = req.body;
 
+
         // Vérifiez si l'utilisateur existe déjà
-        const user = await db.query(
+        const result = await db.query(
             'SELECT * FROM users WHERE username = ?',
             [username]
         );
 
+        const user = result[0];
+
         console.log(user);
 
-        // if (user.length === 0) {
-        //     return res.status(401).json({ message: "L'utilisateur n'existe pas." });
-        // }
+        if (user.length === 0) {
+            return res.status(401).json({ message: "L'utilisateur n'existe pas." });
+        }
 
-        // // Vérifiez si le mot de passe est correct
-        // const passwordCorrect = await bcrypt.compare(password, user[0].password);
-        // if (!passwordCorrect) {
-        //     return res.status(401).json({ message: 'Mot de passe incorrect.' });
-        // }
+        // Vérifiez si le mot de passe est correct
+        const passwordCorrect = await bcrypt.compare(password, user.password);
+        if (!passwordCorrect) {
+            return res.status(401).json({ message: 'Mot de passe incorrect.' });
+        }
 
-        // // Créez un token JWT
-        // const token = jwt.sign(
-        //     { userId: user[0].id },
-        //     process.env.JWT_SECRET,
-        //     { expiresIn: '24h' }
-        // );
+        // Créez un token JWT
+        const token = jwt.sign(
+            { userId: user.user_id },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
 
-        // res.status(200).json({ token });
+        res.status(200).json({ token });
 
     } catch (error) {
+        console.error("Erreur lors de la connexion :", error);
         res.status(500).json({ message: 'Erreur lors de la connexion.' });
     }
+    
 };
 
 

@@ -1,19 +1,15 @@
 const mysql = require('mysql');
+const util = require('util');
 require('dotenv').config();
 
-// const connection = mysql.createConnection({
-//     host: process.env.DB_HOST,
-//     user: process.env.DB_USER,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_NAME
-// });
-
 const connection = mysql.createConnection({
-    host: 'mysql-matthieu-73.alwaysdata.net',
-    user: '339794_aymeric',
-    password: '339794_aymeric_projet_dev_auth',
-    database: 'matthieu-73_integration_web'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
+
+connection.query = util.promisify(connection.query);
 
 connection.connect(error => {
     if (error) throw error;

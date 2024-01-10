@@ -1,5 +1,7 @@
 const express = require('express');
 const { register } = require('module');
+const { login } = require('module');
+const { logout } = require('module');
 const app = express();
 const path = require('path');
 const userRoutes = require('./routes/userRoutes');
