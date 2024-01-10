@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../middlewares/auth');
 const userController = require('../controllers/userController');
 
 router.post('/register', userController.register);
@@ -18,6 +19,14 @@ router.get('/register', (req, res) => {
     res.render('register');
 }
 );
+
+router.get('/logout', userController.logout);
+
+// Exemple d'une route protégée
+router.get('/index', authMiddleware, (req, res) => {
+    // Traiter la demande pour le tableau de bord
+    res.render('index');
+});
 
 module.exports = router;
 

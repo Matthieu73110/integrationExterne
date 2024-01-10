@@ -21,6 +21,28 @@ const authServiceClient = {
             throw error;
         }
     },
+    logout: async () => {
+        try {
+            const response = await axios.post('http://127.0.0.3000/api/auth/logout');
+            return response.data;
+        } catch (error) {
+            // Gérer les erreurs
+            console.error(error);
+            throw error;
+        }
+    },
+    verifyToken: async (token) => {
+        try {
+            const response = await axios.post('http://127.0.0.3000/api/auth/verify', { token });
+            return response.data;
+        } catch (error) {
+            // Gérer les erreurs
+            console.error(error);
+            throw error;
+        }
+    }
 };
+
+
 
 module.exports = authServiceClient;

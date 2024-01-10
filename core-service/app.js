@@ -1,7 +1,5 @@
 const express = require('express');
-const { register } = require('module');
-const { login } = require('module');
-const { logout } = require('module');
+const cookieParser = require('cookie-parser');
 const app = express();
 const path = require('path');
 const userRoutes = require('./routes/userRoutes');
@@ -17,7 +15,8 @@ app.use(express.urlencoded({ extended: false }));
 // Routes
 app.use(userRoutes);
 
-
+// Middleware pour les cookies
+app.use(cookieParser());
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Core Service running on port ${PORT}`));
