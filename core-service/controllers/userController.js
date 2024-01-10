@@ -14,7 +14,7 @@ exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
         const result = await authServiceClient.login(username, password);
-        res.cookie('jwt', result.token, { httpOnly: true });
+        res.cookie('jwt', result.message, { httpOnly: true });
         res.redirect('/index'); // Rediriger vers une page de succès
     }
     catch (error) {

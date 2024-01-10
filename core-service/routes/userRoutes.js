@@ -23,7 +23,7 @@ router.get('/register', (req, res) => {
 router.get('/logout', userController.logout);
 
 // Exemple d'une route protégée
-router.get('/index', authMiddleware, (req, res) => {
+router.get('/index', (req, res) => {
     // Traiter la demande pour le tableau de bord
     res.render('index');
 });

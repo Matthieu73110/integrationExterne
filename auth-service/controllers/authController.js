@@ -82,19 +82,22 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        const jeton = req.headers.authorization?.split(' ')[1];
+        const token = req.headers.authorization?.split(' ')[1];
+        console.log(token);
+        // Voir comment on recupere le token
 
-        if (!jeton) {
+        if (!token) {
             return res.status(400).json({ statut: "Erreur", message: "Jeton manquant" });
         }
 
-        await supprimerJeton(jeton);
+        await supprimerJeton(token);
 
         res.status(200).json({ statut: "Succès", message: "Déconnexion réussie." });
     } catch (error) {
         res.status(500).json({ statut: "Erreur", message: 'Erreur lors de la déconnexion.' });
     }
 };
+
 
 const supprimerJeton = async (token) => {
     await db.query(
