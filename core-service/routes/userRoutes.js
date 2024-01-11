@@ -7,7 +7,7 @@ router.post('/register', userController.register);
 router.post('/login', userController.login);
 
 router.get('/', (req, res) => {
-    res.send('Bienvenue sur mon application Core Service!');
+    res.render('index');
 });
 
 router.get('/login', (req, res) => {
@@ -20,13 +20,18 @@ router.get('/register', (req, res) => {
 }
 );
 
-router.get('/logout', userController.logout);
-
 // Exemple d'une route protégée
-router.get('/index',authMiddleware, (req, res) => {
+router.get('/dashboard',authMiddleware, (req, res) => {
     // Traiter la demande pour le tableau de bord
-    res.render('index');
-});
+    res.render('dashboard');
+}
+);
+
+// Redirection vers la page de connexion après la déconnexion
+router.get('/logout', userController.logout, (req, res) => {
+    res.redirect('/login');
+}
+);
 
 module.exports = router;
 

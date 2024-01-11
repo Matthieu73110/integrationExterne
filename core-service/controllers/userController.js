@@ -15,7 +15,7 @@ exports.login = async (req, res) => {
         const { username, password } = req.body;
         const result = await authServiceClient.login(username, password);
         res.cookie('jwt', result.message, { httpOnly: true });
-        res.redirect('/index'); // Rediriger vers une page de succès
+        res.redirect('/dashboard'); // Rediriger vers une page de succès
     }
     catch (error) {
         res.status(500).send('Erreur lors de la connexion');
@@ -24,10 +24,12 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        const result = await authServiceClient.logout();
-        if (result.status === "Succès"){
+        // Récupérer le jeton du cookie
+        const token = req.cookies.jwt;
+        const result = await authServiceClient.logout(token);
+        if (result.statut === "Succès"){
             res.clearCookie('jwt');
-            res.redirect('/login'); // Rediriger vers une page de succès
+            res.redirect('/'); // Rediriger vers une page de succès
         }
     }
     catch (error) {

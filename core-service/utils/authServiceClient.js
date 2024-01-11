@@ -21,10 +21,10 @@ const authServiceClient = {
             throw error;
         }
     },
-    logout: async () => {
+    logout: async (token) => {
         try {
-            const response = await axios.get('http://127.0.0.1:3000/api/auth/logout');
-            return response.data;
+            const response = await axios.get('http://127.0.0.1:3000/api/auth/logout', { params: { token } });
+            return response.data;     
         } catch (error) {
             // Gérer les erreurs
             console.error(error);
@@ -33,7 +33,7 @@ const authServiceClient = {
     },
     verifyToken: async (token) => {
         try {
-            const response = await axios.post('http://127.0.0.1:3000/api/auth/verify', { token });
+            const response = await axios.post('http://127.0.0.1:3000/api/auth/verify', {token});
             return response.data;
         } catch (error) {
             // Gérer les erreurs
