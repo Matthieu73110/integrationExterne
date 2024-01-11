@@ -25,8 +25,10 @@ exports.login = async (req, res) => {
 exports.logout = async (req, res) => {
     try {
         const result = await authServiceClient.logout();
-        res.clearCookie('jwt');
-        res.redirect('/login'); // Rediriger vers une page de succès
+        if (result.status === "Succès"){
+            res.clearCookie('jwt');
+            res.redirect('/login'); // Rediriger vers une page de succès
+        }
     }
     catch (error) {
         res.status(500).send('Erreur lors de la déconnexion');
