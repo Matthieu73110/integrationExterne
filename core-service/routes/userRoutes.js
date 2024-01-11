@@ -22,8 +22,9 @@ router.get('/register', (req, res) => {
 
 // Exemple d'une route protégée
 router.get('/dashboard',authMiddleware, (req, res) => {
+   let userName = req.user.identifiant;
     // Traiter la demande pour le tableau de bord
-    res.render('dashboard');
+    res.render('dashboard', {userName});
 }
 );
 
@@ -33,6 +34,9 @@ router.get('/logout', userController.logout, (req, res) => {
 }
 );
 
+router.get('/stations', userController.displayStations, (req, res) => {
+    res.render('stations');
+});
 module.exports = router;
 
 

@@ -1,27 +1,74 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Tableau de bord</title>
-</head>
-<body>
-    <h1>Bienvenue Utilisateur(e)!</h1>
-    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>Bienvenue <%= userName %> !</h1>
+    <div id="map"></div>
     <h2>Itinéraires sauvegardés</h2>
     <ul>
-        <!-- Afficher la liste des itinéraires précédemment sauvegardés -->
-        <li>Itinéraire 1 <a href="/download/pdf/itineraire1.pdf">Télécharger PDF</a></li>
-        <li>Itinéraire 2 <a href="/download/pdf/itineraire2.pdf">Télécharger PDF</a></li>
-        <li>Itinéraire 3 <a href="/download/pdf/itineraire3.pdf">Télécharger PDF</a></li>
+      <!-- Afficher la liste des itinéraires précédemment sauvegardés -->
+      <li>
+        Itinéraire 1 <a href="/download/pdf/itineraire1.pdf">Télécharger PDF</a>
+      </li>
+      <li>
+        Itinéraire 2 <a href="/download/pdf/itineraire2.pdf">Télécharger PDF</a>
+      </li>
+      <li>
+        Itinéraire 3 <a href="/download/pdf/itineraire3.pdf">Télécharger PDF</a>
+      </li>
     </ul>
-    
+
     <button onclick="createNewItineraire()">Créer un nouvel itinéraire</button>
-    
-    <a href="/stations">Accéder à la liste des stations et leur occupation actuelle</a>
-    
+
+    <a href="/stations"
+      >Accéder à la liste des stations et leur occupation actuelle</a
+    >
+
     <script>
-        function createNewItineraire() {
-            // Logique pour créer un nouvel itinéraire
-        }
+      function createNewItineraire() {
+        // Logique pour créer un nouvel itinéraire
+      }
+
+      // Initialiser la carte
+      var map = L.map("map").setView([48.8566, 2.3522], 12);
+
+      // Ajouter une couche de tuiles OpenStreetMap
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+      }).addTo(map);
+
+      // Afficher le dashboard après connexion
+      function showDashboard() {
+        document.getElementById("dashboard").style.display = "block";
+      }
+
+      // Événement de clic sur le bouton "Créer un nouvel itinéraire"
+      document
+        .getElementById("newItineraryBtn")
+        .addEventListener("click", function () {
+          // Afficher la carte pour créer un nouvel itinéraire
+          map.invalidateSize();
+          // Ici, vous pouvez ajouter le code pour enregistrer les coordonnées au clic sur la carte
+        });
+
+      // Événement de clic sur le lien "Liste des stations"
+      document
+        .getElementById("stationsLink")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          // Ici, vous pouvez ajouter le code pour afficher la liste des stations
+        });
     </script>
-</body>
+  </body>
 </html>
