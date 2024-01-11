@@ -82,9 +82,7 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        const token = req.headers.authorization?.split(' ')[1];
-        console.log(token);
-        // Voir comment on recupere le token
+        const token = req.body.token;
 
         if (!token) {
             return res.status(400).json({ statut: "Erreur", message: "Jeton manquant" });
@@ -108,7 +106,8 @@ const supprimerJeton = async (token) => {
 
 exports.verifyToken = async (req, res) => {
     try {
-        const { jeton } = req.body;
+        // Récupérer le jeton
+        const jeton = req.body.token;
 
         if (!jeton) {
             return res.status(400).json({ statut: "Erreur", message: "JSON incorrect" });
@@ -124,8 +123,8 @@ exports.verifyToken = async (req, res) => {
 
         // Rechercher l'utilisateur associé au jeton
         const result = await db.query(
-            'SELECT * FROM users WHERE token = ?',
-            [jeton]
+            'SELECT * FROM users WHERE token = ? and user_id = ?',
+            [jeton, decoded.userId]
         );
 
         if (result.length === 0) {

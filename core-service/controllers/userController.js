@@ -33,6 +33,17 @@ exports.logout = async (req, res) => {
     }
 };
 
+exports.verifyToken = async (req, res) => {
+    try {
+        const { token } = req.body;
+        const result = await authServiceClient.verifyToken(token);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        res.status(500).send('Erreur lors de la vérification du jeton');
+    }
+};
+
 
 
 

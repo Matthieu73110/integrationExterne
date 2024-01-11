@@ -1,14 +1,20 @@
 const jwt = require('jsonwebtoken');
+const { verifyToken } = require('../utils/authServiceClient');
 
 const authMiddleware = async (req, res, next) => {
     try {
-        const jeton = req.cookies.jwt;
+        const jeton = req.cookies.jwt; // Récupère le jeton dans le cookie
+        console.log("Jeton du middlware : " + jeton);
 
         if (!jeton) {
             return res.status(401).json({ statut: "Erreur", message: "Jeton manquant" });
         }
 
-        const response = await verifierJeton(jeton);
+        console.log("Avant vérification du jeton");
+
+        const response = await verifyToken(jeton); // Vérifie le jeton
+
+        console.log("Après vérification du jeton");
 
         if (response.statut !== "Succès") {
             return res.status(401).json({ statut: "Erreur", message: "Jeton invalide" });

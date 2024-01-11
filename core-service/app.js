@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const path = require('path');
 const userRoutes = require('./routes/userRoutes');
+app.use(cookieParser());
 
 // Configuration d'EJS
 app.set('view engine', 'ejs');
