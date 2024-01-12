@@ -1,13 +1,11 @@
 function createMarker(lat, lng, type=null, name_station=null) {
-    var marker = L.marker([lat, lng], { draggable: 'true' });
     if(type!== null){
+        var marker = L.marker([lat, lng], { draggable: true });
         marker.on('dragend', function(e) {
             updateInputFields(marker.getLatLng(), type);
         });
     }else if (name_station !== null){
-        marker.on('dragend', function(e) {
-            // updateInputFields(marker.getLatLng(), type);
-        });
+        var marker = L.marker([lat, lng], { draggable: false });
         marker.bindPopup(name_station);
     }   
     return marker.addTo(map);
