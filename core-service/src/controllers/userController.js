@@ -77,5 +77,52 @@ exports.displayStations = async (req, res, next) => {
 };
 
 
+exports.saveItinerary = (req, res) => {
+
+    // [Object: null prototype] {
+    //     itineraryName: 'AA',
+    //     startAddressSearch: '44 Rue Mademoiselle 75015 Paris',
+    //     endAddressSearch: '15 Rue Jules Chaplain 75006 Paris',
+    //     'data-lat-start': '48.84354144350769',
+    //     'data-lon-start': '2.2990608215332036',
+    //     'data-lat-end': '48.84252467301336',
+    //     'data-lon-end': '2.3304748535156254',
+    //     saveitin: "Enregistrer l'itinéraire"
+    //   }
+
+    try {
+
+
+        const { itineraryName, startAddressSearch, endAddressSearch, 'data-lat-start': latStart, 'data-lon-start': lonStart, 'data-lat-end': latEnd, 'data-lon-end': lonEnd } = req.body;
+
+        if (!itineraryName || !startAddressSearch || !endAddressSearch || !latStart || !lonStart || !latEnd || !lonEnd) {
+            return res.status(400).json({ statut: "Erreur", message: "Données manquantes" });
+        }
+
+        const itinerary = {
+            name: itineraryName,
+            startAddress: startAddressSearch,
+            endAddress: endAddressSearch,
+            points: [
+                { lat: latStart, lon: lonStart },
+                { lat: latEnd, lon: lonEnd }
+            ]
+        };
+
+        // Enregistrer l'itinéraire dans la base de données
+        const itineraire = await db.query(
+            'INSERT INTO itineraries (name, points, user_id) VALUES (?, ?, ?, ?)',
+            [itinerary.name, JSON.stringify(itinerary.points), req.user.user_id]
+        );
+
+        res.status(204).send();
+    } catch (error) {
+
+    
+
+}
+
+
+
 
 

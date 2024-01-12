@@ -43,10 +43,14 @@ router.get('/stations', userController.displayStations, (req, res) => {
     res.render('stations', { stations: res.locals.stations });
 });
 
-router.get('/Itineraire', authMiddleware, (req, res) => {
-    res.render('Itineraire');
+router.get('/itineraire', authMiddleware, (req, res) => {
+    res.render('itineraire');
 });
 
+// Route de sauvegarde d'un itinéraire
+router.post('/itineraire', authMiddleware, userController.saveItinerary, (req, res) => {
+    res.redirect('/dashboard');
+});
 
 module.exports = router;
 
