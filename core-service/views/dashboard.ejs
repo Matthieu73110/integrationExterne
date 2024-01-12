@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <style>
         #map {
-            height: 400px;
+            height: 600px;
         }
     </style>
   </head>
@@ -34,13 +34,14 @@
     <a href="/stations"
       >Accéder à la liste des stations et leur occupation actuelle</a
     >
+    <script src="js/index.js" type="text/javascript"></script>
     <script>
       function createNewItineraire() {
         // Logique pour créer un nouvel itinéraire
       }
 
       // Initialiser la carte
-      var map = L.map("map").setView([48.8566, 2.3522], 12);
+      var map = L.map("map").setView([48.8566, 2.3522], 15);
 
       // Ajouter une couche de tuiles OpenStreetMap
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -49,12 +50,9 @@
 
       // Afficher les stations sur la carte
       var stations = [<%- JSON.stringify(stations) %>];
-
-      stations.forEach(function (station) {
-        console.log(station)
-        if (station.lat && station.lon) {
-          L.marker(station.lat, station.lon, 'test').addTo(map);
-        }
+      
+      stations[0].forEach(function (station) {
+        createMarker(station.lat, station.lon, null, station.name);
       });
 
       // // Afficher le dashboard après connexion

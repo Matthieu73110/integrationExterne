@@ -1,8 +1,15 @@
-function createMarker(lat, lng, type) {
+function createMarker(lat, lng, type=null, name_station=null) {
     var marker = L.marker([lat, lng], { draggable: 'true' });
-    marker.on('dragend', function(e) {
-        // updateInputFields(marker.getLatLng(), type);
-    });
+    if(type!== null){
+        marker.on('dragend', function(e) {
+            updateInputFields(marker.getLatLng(), type);
+        });
+    }else if (name_station !== null){
+        marker.on('dragend', function(e) {
+            // updateInputFields(marker.getLatLng(), type);
+        });
+        marker.bindPopup(name_station);
+    }   
     return marker.addTo(map);
 }
 
