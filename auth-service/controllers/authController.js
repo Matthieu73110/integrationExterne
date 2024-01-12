@@ -141,7 +141,7 @@ exports.verifyToken = async (req, res) => {
         res.status(200).json({
             statut: "Succès",
             message: "Jeton valide",
-            utilisateur: { identifiant: user.username }
+            utilisateur: {user}
         });
 
     } catch (error) {

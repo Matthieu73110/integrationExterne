@@ -22,9 +22,9 @@ router.get('/register', (req, res) => {
 
 // Exemple d'une route protégée
 router.get('/dashboard',authMiddleware, userController.displayStations, (req, res) => {
-   let userName = req.user.identifiant;
+    var username = req.user.username
     // Traiter la demande pour le tableau de bord
-    res.render('dashboard', {userName});
+    res.render('dashboard', {username});
 }
 );
 

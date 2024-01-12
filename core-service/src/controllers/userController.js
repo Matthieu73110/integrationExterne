@@ -1,5 +1,6 @@
 const { response } = require('express');
 const authServiceClient = require('../../utils/authServiceClient');
+const db = require('../../database/connection');
 const fetch = require('node-fetch');
 
 exports.register = async (req, res) => {
@@ -77,22 +78,9 @@ exports.displayStations = async (req, res, next) => {
 };
 
 
-exports.saveItinerary = (req, res) => {
-
-    // [Object: null prototype] {
-    //     itineraryName: 'AA',
-    //     startAddressSearch: '44 Rue Mademoiselle 75015 Paris',
-    //     endAddressSearch: '15 Rue Jules Chaplain 75006 Paris',
-    //     'data-lat-start': '48.84354144350769',
-    //     'data-lon-start': '2.2990608215332036',
-    //     'data-lat-end': '48.84252467301336',
-    //     'data-lon-end': '2.3304748535156254',
-    //     saveitin: "Enregistrer l'itinéraire"
-    //   }
-
+exports.saveItinerary = async (req, res) => {
     try {
-
-
+        console.log(req.body)
         const { itineraryName, startAddressSearch, endAddressSearch, 'data-lat-start': latStart, 'data-lon-start': lonStart, 'data-lat-end': latEnd, 'data-lon-end': lonEnd } = req.body;
 
         if (!itineraryName || !startAddressSearch || !endAddressSearch || !latStart || !lonStart || !latEnd || !lonEnd) {
@@ -110,17 +98,17 @@ exports.saveItinerary = (req, res) => {
         };
 
         // Enregistrer l'itinéraire dans la base de données
-        const itineraire = await db.query(
-            'INSERT INTO itineraries (name, points, user_id) VALUES (?, ?, ?, ?)',
-            [itinerary.name, JSON.stringify(itinerary.points), req.user.user_id]
+        await db.query(
+            'INSERT INTO itineraires (name, points, user_id) VALUES (?, ?, ?)',
+            [itinerary.name, JSON.stringify(itinerary.points), req.user.user.user_id]
         );
 
-        res.status(204).send();
+        res.status(200).json({ statut: "Succès", message: "Ajout de l'itinéraire réussi." });
     } catch (error) {
-
-    
-
-}
+        console.error(error);
+        res.status(500).json({ statut: "Erreur", message: "Erreur lors de l'ajout de l'itinéraire." });
+    }
+};
 
 
 
