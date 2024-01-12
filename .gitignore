@@ -3,6 +3,12 @@ auth-service/.env
 auth-service/package-lock.json
 auth-service/node_modules
 
+core-service/.env
+
 core-service/package-lock.json
 core-service/node_modules
 
+pdf-service/.env
+
+pdf-service/package-lock.json
+pdf-service/node_modules
