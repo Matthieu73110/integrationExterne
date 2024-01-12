@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middlewares/auth');
-const userController = require('../controllers/userController');
+const authMiddleware = require('../src/middlewares/auth');
+const userController = require('../src/controllers/userController');
 
 router.post('/register', userController.register);
 router.post('/login', userController.login);
@@ -21,7 +21,7 @@ router.get('/register', (req, res) => {
 );
 
 // Exemple d'une route protégée
-router.get('/dashboard',authMiddleware, (req, res) => {
+router.get('/dashboard',authMiddleware, userController.displayStations, (req, res) => {
    let userName = req.user.identifiant;
     // Traiter la demande pour le tableau de bord
     res.render('dashboard', {userName});
@@ -43,8 +43,8 @@ router.get('/stations', userController.displayStations, (req, res) => {
     res.render('stations', { stations: res.locals.stations });
 });
 
-router.get('/itineraire', (req, res) => {
-    res.render('itineraire');
+router.get('/Itineraire', authMiddleware, (req, res) => {
+    res.render('Itineraire');
 });
 
 

@@ -34,7 +34,6 @@
     <a href="/stations"
       >Accéder à la liste des stations et leur occupation actuelle</a
     >
-
     <script>
       function createNewItineraire() {
         // Logique pour créer un nouvel itinéraire
@@ -48,27 +47,37 @@
         attribution: "© OpenStreetMap contributors",
       }).addTo(map);
 
-      // Afficher le dashboard après connexion
-      function showDashboard() {
-        document.getElementById("dashboard").style.display = "block";
-      }
+      // Afficher les stations sur la carte
+      var stations = [<%- JSON.stringify(stations) %>];
 
-      // Événement de clic sur le bouton "Créer un nouvel itinéraire"
-      document
-        .getElementById("newItineraryBtn")
-        .addEventListener("click", function () {
-          // Afficher la carte pour créer un nouvel itinéraire
-          map.invalidateSize();
-          // Ici, vous pouvez ajouter le code pour enregistrer les coordonnées au clic sur la carte
-        });
+      stations.forEach(function (station) {
+        console.log(station)
+        if (station.lat && station.lon) {
+          L.marker(station.lat, station.lon, 'test').addTo(map);
+        }
+      });
 
-      // Événement de clic sur le lien "Liste des stations"
-      document
-        .getElementById("stationsLink")
-        .addEventListener("click", function (e) {
-          e.preventDefault();
-          // Ici, vous pouvez ajouter le code pour afficher la liste des stations
-        });
+      // // Afficher le dashboard après connexion
+      // function showDashboard() {
+      //   document.getElementById("dashboard").style.display = "block";
+      // }
+
+      // // Événement de clic sur le bouton "Créer un nouvel itinéraire"
+      // document
+      //   .getElementById("newItineraryBtn")
+      //   .addEventListener("click", function () {
+      //     // Afficher la carte pour créer un nouvel itinéraire
+      //     map.invalidateSize();
+      //     // Ici, vous pouvez ajouter le code pour enregistrer les coordonnées au clic sur la carte
+      //   });
+
+      // // Événement de clic sur le lien "Liste des stations"
+      // document
+      //   .getElementById("stationsLink")
+      //   .addEventListener("click", function (e) {
+      //     e.preventDefault();
+      //     // Ici, vous pouvez ajouter le code pour afficher la liste des stations
+      //   });
     </script>
   </body>
 </html>

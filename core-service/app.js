@@ -8,7 +8,7 @@ app.use(cookieParser());
 // Configuration d'EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
+app.use(express.static(path.join(__dirname, 'public')));
 // Middleware pour parser le JSON et les formulaires
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

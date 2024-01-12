@@ -1,5 +1,6 @@
 const { response } = require('express');
-const authServiceClient = require('../utils/authServiceClient');
+const authServiceClient = require('../../utils/authServiceClient');
+const fetch = require('node-fetch');
 
 exports.register = async (req, res) => {
     try {
@@ -74,7 +75,6 @@ exports.displayStations = async (req, res, next) => {
         res.status(500).send('Erreur lors du traitement de la demande');
     }
 };
-
 
 
 
