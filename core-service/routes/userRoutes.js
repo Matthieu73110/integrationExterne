@@ -34,9 +34,16 @@ router.get('/logout', userController.logout, (req, res) => {
 }
 );
 
+// router.get('/stations', userController.displayStations, (req, res) => {
+//     res.render('stations');
+// });
+
 router.get('/stations', userController.displayStations, (req, res) => {
-    res.render('stations');
+    // Les données sont maintenant accessibles dans res.locals.stations
+    res.render('stations', { stations: res.locals.stations });
 });
+
+
 module.exports = router;
 
 
