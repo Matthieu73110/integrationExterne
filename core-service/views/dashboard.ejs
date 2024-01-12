@@ -52,7 +52,7 @@
       var stations = [<%- JSON.stringify(stations) %>];
       
       stations[0].forEach(function (station) {
-        createMarker(station.lat, station.lon, null, station.name);
+        createMarker(station.lat, station.lon, null, station);
       });
 
       // // Afficher le dashboard après connexion

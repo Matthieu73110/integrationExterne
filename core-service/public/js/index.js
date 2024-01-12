@@ -1,12 +1,18 @@
-function createMarker(lat, lng, type=null, name_station=null) {
+function createMarker(lat, lng, type=null, station=null) {
     if(type!== null){
         var marker = L.marker([lat, lng], { draggable: true });
         marker.on('dragend', function(e) {
             updateInputFields(marker.getLatLng(), type);
         });
-    }else if (name_station !== null){
+    }else if (station !== null){
         var marker = L.marker([lat, lng], { draggable: false });
-        marker.bindPopup(name_station);
+        var popupContent = `
+            <p><strong>${station.name}</strong></p>
+            <p><strong>Statut :</strong> ${station.is_renting ? 'Ouvert' : 'Fermé'}</p>
+            <p><strong>Vélos Disponibles :</strong> ${station.numBikesAvailable}</p>
+            <p><strong>Places Disponibles:</strong> ${station.numDocksAvailable}</p>
+        `;
+        marker.bindPopup(popupContent);
     }   
     return marker.addTo(map);
 }
