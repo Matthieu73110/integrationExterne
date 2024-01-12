@@ -49,23 +49,6 @@ exports.verifyToken = async (req, res) => {
     }
 };
 
-// exports.displayStation = async (req, res) => {
-//     try {
-//         let stationsFinal = [];
-//         let stationIds = [];
-//         const apiUrlStationsInformatins = 'https://velib-metropole-opendata.smovengo.cloud/opendata/Velib_Metropole/station_information.json';
-//         const apiUrlStationsStatus = 'https://velib-metropole-opendata.smovengo.cloud/opendata/Velib_Metropole/station_status.json';
-//         const response = await fetch(apiUrlStationsStatus);
-//         const data = await response.json();
-
-//         console.log(data);
-//         res.status(200).json(result);
-//     }
-//     catch (error) {
-//         res.status(500).send('Erreur lors de la vérification du jeton');
-//     }
-// };
-
 
 exports.displayStations = async (req, res, next) => {
     try {

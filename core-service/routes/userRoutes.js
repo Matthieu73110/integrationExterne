@@ -43,6 +43,10 @@ router.get('/stations', userController.displayStations, (req, res) => {
     res.render('stations', { stations: res.locals.stations });
 });
 
+router.get('/itineraire', (req, res) => {
+    res.render('itineraire');
+});
+
 
 module.exports = router;
 

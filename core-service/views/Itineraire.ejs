@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Création d'Itinéraire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <style>
+        #map { height: 400px; }
+        .search-container { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Créer un Itinéraire</h1>
+    <div id="map"></div>
+
+    <button onclick="setActiveMarker('start')">Définir comme Départ</button>
+    <button onclick="setActiveMarker('end')">Définir comme Arrivée</button>
+
+    <div class="search-container">
+        <input type="text" id="startAddressSearch" placeholder="Adresse de départ">
+        <button onclick="searchAddress('start')">Rechercher Départ</button>
+        <ul id="startSearchResults"></ul>
+        <button onclick="resetStartMarker()">Réinitialiser Départ</button>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="endAddressSearch" placeholder="Adresse d'arrivée">
+        <button onclick="searchAddress('end')">Rechercher Arrivée</button>
+        <ul id="endSearchResults"></ul>
+        <button onclick="resetEndMarker()">Réinitialiser Arrivée</button>
+    </div>
+
+    <script>
+        var map = L.map('map').setView([48.8566, 2.3522], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var startMarker, endMarker;
+        var activeMarkerType = 'start';
+
+        function createMarker(lat, lng, type) {
+            var marker = L.marker([lat, lng], { draggable: 'true' });
+            marker.on('dragend', function(e) {
+                updateInputFields(marker.getLatLng(), type);
+            });
+            return marker.addTo(map);
+        }
+
+        function searchAddress(type) {
+            var query = document.getElementById(type + 'AddressSearch').value;
+            fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data.features, type);
+                });
+        }
+
+        function displaySearchResults(results, type) {
+            var resultsList = document.getElementById(type + 'SearchResults');
+            resultsList.innerHTML = '';
+            results.forEach(function(result) {
+                var li = document.createElement('li');
+                li.textContent = result.properties.label;
+                li.onclick = function() {
+                    var selectedAddress = result.properties.label;
+                    document.getElementById(type + 'AddressSearch').value = selectedAddress; // Mise à jour du champ de saisie
+
+                    var lat = result.geometry.coordinates[1];
+                    var lng = result.geometry.coordinates[0];
+                    map.setView([lat, lng], 13);
+
+                    if (type === 'start') {
+                        if (startMarker) map.removeLayer(startMarker);
+                        startMarker = createMarker(lat, lng, 'start');
+                    } else {
+                        if (endMarker) map.removeLayer(endMarker);
+                        endMarker = createMarker(lat, lng, 'end');
+                    }
+
+                    resultsList.innerHTML = ''; // Nettoyer les résultats après la sélection
+                };
+                resultsList.appendChild(li);
+            });
+        }
+
+        function resetStartMarker() {
+            if (startMarker) {
+                map.removeLayer(startMarker);
+                startMarker = null;
+                document.getElementById('startAddressSearch').value = '';
+                document.getElementById('startSearchResults').innerHTML = '';
+            }
+        }
+
+        function resetEndMarker() {
+            if (endMarker) {
+                map.removeLayer(endMarker);
+                endMarker = null;
+                document.getElementById('endAddressSearch').value = '';
+                document.getElementById('endSearchResults').innerHTML = '';
+            }
+        }
+
+        function setActiveMarker(type) {
+            activeMarkerType = type;
+        }
+
+        function updateInputFields(latlng, type) {
+            fetch(`https://api-adresse.data.gouv.fr/reverse/?lon=${latlng.lng}&lat=${latlng.lat}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.features.length > 0) {
+                        var address = data.features[0].properties.label;
+                        document.getElementById(type + 'AddressSearch').value = address;
+                    }
+                });
+        }
+
+        map.on('click', function(e) {
+            fetch(`https://api-adresse.data.gouv.fr/reverse/?lon=${e.latlng.lng}&lat=${e.latlng.lat}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.features.length > 0) {
+                        var address = data.features[0].properties.label;
+                        if (activeMarkerType === 'start') {
+                            resetStartMarker();
+                            startMarker = createMarker(e.latlng.lat, e.latlng.lng, 'start');
+                            document.getElementById('startAddressSearch').value = address;
+                        } else {
+                            resetEndMarker();
+                            endMarker = createMarker(e.latlng.lat, e.latlng.lng, 'end');
+                            document.getElementById('endAddressSearch').value = address;
+                        }
+                    }
+                });
+        });
+    </script>
+</body>
+</html>
