@@ -5,36 +5,96 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <style>
-        #map { height: 400px; }
-        .search-container { margin-bottom: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+        }
+        #map {
+            width: 50%;
+            height: 600px;
+            border: 1px solid #ddd;
+        }
+        #form {
+            width: 50%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .search-container, form button, form input[type="text"], form input[type="submit"] {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        form button, form input[type="submit"] {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        form button:hover, form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #eaeaea;
+            border-radius: 5px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+        .search-container input[type="text"] {
+            flex-grow: 1;
+        }
+        .reset-button {
+            background: none;
+            border: none;
+            color: black;
+            padding: 0;
+            cursor: pointer;
+        }
+        .reset-button:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <h1>Créer un Itinéraire</h1>
-    <div id="map"></div>
+    <div id="form">
+        <h1>Créer un Itinéraire</h1>
+        <form action="/itineraire" method="POST">
+            <div class="search-container">
+                <input type="text" name="itineraryName" id="itineraryName" placeholder="Nom de l'itinéraire">
+            </div>
 
-    <form action="/itineraire" method="POST">
+            <div class="button-container">
+                <button type="button" onclick="setActiveMarker('start')">Définir le départ</button>
+                <button type="button" onclick="setActiveMarker('end')">Définir l'arrivée</button>
+            </div>
 
-        <div class="search-container">
-            <input type="text" name="itineraryName" id="itineraryName" placeholder="Nom de l'itinéraire">
-        </div>
+            <div class="search-container">
+                <input type="text" name="startAddressSearch" id="startAddressSearch" placeholder="Adresse de départ">
+                <button onclick="searchAddress('start')">Rechercher Départ</button>
+            </div>
+            <button class="reset-button" onclick="resetStartMarker()">Réinitialiser Départ</button>
 
-        <button type="button" onclick="setActiveMarker('start')">Définir comme Départ</button>
-        <button type="button" onclick="setActiveMarker('end')">Définir comme Arrivée</button>
-
-        <div class="search-container">
-            <input type="text" name="startAddressSearch" id="startAddressSearch" placeholder="Adresse de départ">
-            <button onclick="searchAddress('start')">Rechercher Départ</button>
-            <ul id="startSearchResults"></ul>
-            <button onclick="resetStartMarker()">Réinitialiser Départ</button>
-        </div>
-
-        <div class="search-container">
-            <input type="text" name="endAddressSearch" id="endAddressSearch" placeholder="Adresse d'arrivée">
-            <button onclick="searchAddress('end')">Rechercher Arrivée</button>
-            <ul id="endSearchResults"></ul>
-            <button onclick="resetEndMarker()">Réinitialiser Arrivée</button>
-        </div>
+            <div class="search-container">
+                <input type="text" name="endAddressSearch" id="endAddressSearch" placeholder="Adresse d'arrivée">
+                <button onclick="searchAddress('end')">Rechercher Arrivée</button>
+            </div>
+            <button class="reset-button" onclick="resetEndMarker()">Réinitialiser Arrivée</button>
 
         <input type="hidden" name="data-lat-start" id="data-lat-start">
         <input type="hidden" name="data-lon-start" id="data-lon-start">
@@ -43,6 +103,9 @@
 
         <input type="submit" name="saveitin" value="Enregistrer l'itinéraire">
     </form>
+    </div>
+    <div id="map"></div>
+
 
     <script src="js/index.js" type="text/javascript"></script>
 

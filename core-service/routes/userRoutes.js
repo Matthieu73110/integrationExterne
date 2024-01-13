@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../src/middlewares/auth');
 const userController = require('../src/controllers/userController');
-const itineraireModel = require('../src/models/itineraireModel')
 
 router.post('/register', userController.register);
 router.post('/login', userController.login);
@@ -22,11 +21,11 @@ router.get('/register', (req, res) => {
 );
 
 // Exemple d'une route protégée
-router.get('/dashboard',authMiddleware, userController.displayStations, async (req, res) => {
+router.get('/dashboard',authMiddleware, userController.displayStations,  async (req, res) => {
     var username = req.user.user.username
     var user_id = req.user.user.user_id
-    var myItinaries = await itineraireModel.displayMyItinaries(user_id);
-    console.log(myItinaries);
+    // Récupérer les itinéraires de l'utilisateur depuis la base de données
+    const myItinaries = await userController.getItineraries(user_id);
     // Traiter la demande pour le tableau de bord
     res.render('dashboard', {username, myItinaries});
 }
