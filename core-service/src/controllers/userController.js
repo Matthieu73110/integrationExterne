@@ -77,10 +77,8 @@ exports.displayStations = async (req, res, next) => {
     }
 };
 
-
 exports.saveItinerary = async (req, res) => {
     try {
-        console.log(req.body)
         const { itineraryName, startAddressSearch, endAddressSearch, 'data-lat-start': latStart, 'data-lon-start': lonStart, 'data-lat-end': latEnd, 'data-lon-end': lonEnd } = req.body;
 
         if (!itineraryName || !startAddressSearch || !endAddressSearch || !latStart || !lonStart || !latEnd || !lonEnd) {
