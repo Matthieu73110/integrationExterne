@@ -32,6 +32,7 @@ exports.downloadPdf = (req, res) => {
         return res.status(400).json({ statut: "Erreur", message: "ID d'itinéraire manquant" });
     }
 
+    // Vérifiez si le fichier PDF existe
     const pdfPath = path.join(__dirname, `../PDF/${itineraryId}.pdf`);
 
     if (!fs.existsSync(pdfPath)) {
@@ -45,6 +46,6 @@ exports.downloadPdf = (req, res) => {
         }
 
         const pdfBase64 = pdfContent.toString('base64');
-        res.send(pdfBase64);
+        res.status(200).json({ statut: "Succès", message: "Téléchargement du PDF réussi", pdfBase64: pdfBase64 });
     });
 };

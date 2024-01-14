@@ -79,12 +79,13 @@ router.get('/download/:itineraryId', authMiddleware, async (req, res) => {
         };
 
         // Envoyer les données au service PDF
-        pdfServiceClient.generatePdf(itineraireData, token);
+        await pdfServiceClient.generatePdf(itineraireData, token);
 
         // recuperer les données du service PDF
         const pdfBase64 = await pdfServiceClient.downloadPdf(itineraryId);
+        console.log(pdfBase64);
 
-        res.json({ statut: "Succès", message: "Téléchargement du PDF réussi", pdfBase64: pdfBase64 });
+        res.redirect('/dashboard');
 
     } catch (error) {
         console.error(error);
