@@ -76,6 +76,8 @@
           <ul>
             <% itinerariesArray.forEach(function(itineraire) { %>
               <li><%= itineraire.name %></li>
+              <!-- Telecharger l'itineraire -->
+              <a href="/download/<%= itineraire.itineraire_id %>">Télécharger l'itinéraire</a>
               <% }); %>
             </ul>
             <% } else { %>

@@ -108,7 +108,7 @@ exports.saveItinerary = async (req, res) => {
     }
 };
 
-exports.getItineraries = async (userId) => {
+exports.getItinerariesByUserId = async (userId) => {
     try {
         const itineraire = await db.query(
             'SELECT * FROM itineraires WHERE user_id = ?',
@@ -122,7 +122,19 @@ exports.getItineraries = async (userId) => {
     }
 };
 
+exports.getItinerariesByItineraryId = async (itineraryId) => {
+    try {
+        const itineraire = await db.query(
+            'SELECT * FROM itineraires WHERE itineraire_id = ?',
+            [itineraryId]
+        );
 
+        return itineraire;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+};
 
 
 

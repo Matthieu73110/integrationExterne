@@ -9,24 +9,18 @@ exports.generatePdf = (req, res) => {
         return res.status(400).json({ statut: "Erreur", message: "Données manquantes" });
     }
 
-    // Créer un nouveau document PDF
+    // Pas besoin de parser 'points', car il est déjà un tableau d'objets
     const doc = new PDFDocument();
-    const pdfPath = `PDF-${itinerary}.pdf`;
+    const pdfPath = `PDF/${itinerary}.pdf`;
 
-    // Stream le contenu PDF dans un fichier
     doc.pipe(fs.createWriteStream(pdfPath));
-
-    // Ajouter du contenu au PDF
     doc.fontSize(25).text(`Itinéraire: ${name}`, 100, 100);
 
     points.forEach((point, index) => {
         doc.fontSize(15).text(`Point ${index + 1}: ${point.lat}, ${point.lon}`, 100, 150 + index * 25);
     });
 
-    // Finaliser le document PDF
     doc.end();
-
-    // Répondre à la requête
     res.status(204).send();
 };
 
@@ -38,11 +32,19 @@ exports.downloadPdf = (req, res) => {
         return res.status(400).json({ statut: "Erreur", message: "ID d'itinéraire manquant" });
     }
 
-    const pdfPath = path.resolve(`PDF-${itineraryId}.pdf`);
+    const pdfPath = path.join(__dirname, `../PDF/${itineraryId}.pdf`);
 
     if (!fs.existsSync(pdfPath)) {
         return res.status(404).json({ statut: "Erreur", message: "Itinéraire non trouvé" });
     }
 
-    res.download(pdfPath);
+    fs.readFile(pdfPath, (err, pdfContent) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Erreur lors de la lecture du fichier PDF");
+        }
+
+        const pdfBase64 = pdfContent.toString('base64');
+        res.send(pdfBase64);
+    });
 };

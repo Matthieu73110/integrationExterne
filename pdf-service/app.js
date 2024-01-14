@@ -4,8 +4,9 @@ const pdfRoutes = require('./routes/pdfRoutes');
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.use('/itinerary', pdfRoutes);
+app.use('/api/pdf/', pdfRoutes);
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {

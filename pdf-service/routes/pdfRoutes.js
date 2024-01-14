@@ -7,6 +7,6 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.post('/itinerary', authMiddleware.validateToken, pdfController.generatePdf);
 
 // Télécharger un itinéraire
-router.get('/itinerary', authMiddleware.validateToken, pdfController.downloadPdf);
+router.get('/itinerary/:idIteneraryId', pdfController.downloadPdf);
 
 module.exports = router;
